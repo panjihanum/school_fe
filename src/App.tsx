@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import LoginPage from './pages/LoginPage'
+import { AuthProvider } from './hooks/AuthContext'
+import { ToastContainer } from 'react-toastify'
+import AdminPage from './pages/Admin/AdminPage'
+import ManagementStudent from './pages/Admin/ManagementStudent'
+import LoadingSpinner from './hooks/LoadingSpinner'
+import 'react-toastify/dist/ReactToastify.css';
+import { LoadingProvider } from './hooks/LoadingContext'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='w-screen h-screen relative'>
+      <div className="w-20 h-20 bg-gradient-to-r from-yellow-300 via-red-400 to-pink-500 rounded-full animate-pulse fixed top-[0px]"></div>
+      <div className="w-20 h-20 bg-gradient-to-r from-yellow-300 via-red-400 to-pink-500 rounded-full animate-pulse fixed bottom-[0px] right-[0px]"></div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/manage-students" element={<ManagementStudent />} />
+        </Routes>
+      </BrowserRouter>
+    </div >
   )
 }
 
-export default App
+function AppWrapper() {
+  return (
+    <AuthProvider>
+      <LoadingProvider>
+        <App />
+        <ToastContainer />
+        <LoadingSpinner />
+      </LoadingProvider>
+    </AuthProvider>
+  )
+}
+
+export default AppWrapper
