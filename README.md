@@ -24,7 +24,7 @@
 15. Masuk ke folder `school_fe`
 16. Jalankan `npm install`
 17. Jalankan `npm run dev` untuk berjalan di mode development
-18. Buka browser dan akses http://localhost:3000
+18. Buka browser dan akses http://localhost:5173
 
 ## List User
 ### Admin:
