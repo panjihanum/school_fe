@@ -35,3 +35,30 @@
 ### Student:
 - Email/Password: student.sabdo@school.com/123456
 - Email/Password: student.panji@school.com/123456
+
+
+## Pengujian API dengan Postman
+
+Untuk melakukan pengujian API, Anda dapat menggunakan Postman. Kumpulan permintaan dan lingkungan Postman dapat ditemukan di folder `school_be_main`.
+
+1. Pastikan Anda telah menginstal [Postman](https://www.postman.com/downloads/) di sistem Anda.
+
+2. Buka Postman.
+
+3. Import file lingkungan dan kumpulan permintaan:
+    - ENV: `SCHOOL_ENV.postman_environment.json`
+    - Collection: `School.postman_collection.json`
+    
+    Anda dapat menemukan kedua file ini di folder `school_be_main`.
+
+4. Untuk mengimpor file-file tersebut, ikuti langkah-langkah berikut:
+    - Klik tombol "Import" di pojok kiri atas Postman.
+    - Pilih file yang sesuai dari folder `school_be_main`.
+    - Klik "Open" untuk mengimpor.
+
+5. Setelah diimpor, Anda akan melihat kumpulan permintaan 'School' dan lingkungan 'SCHOOL_ENV' di panel kiri Postman.
+
+6. Sebelum menjalankan permintaan, pastikan untuk memilih lingkungan 'SCHOOL_ENV' dan sesuaikan variabel-variabel yang diperlukan seperti URL dasar, token otentikasi, dll., sesuai dengan pengaturan Anda.
+
+7. Anda sekarang dapat memulai pengujian API dengan mengirim permintaan dari kumpulan 'School'.
+
