@@ -5,6 +5,7 @@ import { axiosMainUtil } from 'src/util/axiosUtil';
 import AddTeacherModal from 'src/components/AddTeacherModal';
 import EditTeacherModal from 'src/components/EditStudentModal';
 import { Teacher } from 'src/interface/teacher';
+import { toast } from 'react-toastify';
 // import EditTeacherModal from './EditTeacherModal';
 // import DeleteTeacherModal from './DeleteTeacherModal';
 
@@ -25,7 +26,20 @@ const ManagementTeacher: React.FC = () => {
             const response = await axiosMainUtil.get('/users/list-teachers');
             setTeachers(response.data);
         } catch (error) {
-            console.error('Error fetching teachers:', error);
+            const axiosError = error as any;
+            if (axiosError.response) {
+                toast(axiosError.response.data.message, {
+                    type: 'error'
+                });
+            } else if (axiosError.request) {
+                toast('Network error. Please try again later.', {
+                    type: 'error'
+                });
+            } else {
+                toast('An error occurred. Please try again later.', {
+                    type: 'error'
+                });
+            }
         }
         setLoading(false);
     };

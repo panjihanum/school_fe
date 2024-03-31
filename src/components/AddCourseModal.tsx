@@ -20,8 +20,8 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({ onClose, onRefresh }) =
             try {
                 const response = await axiosMainUtil.get('/users/list-teachers');
                 setTeachers(response.data);
-            } catch (error) {
-                console.error('Error fetching teachers:', error);
+            } catch (error: any) {
+                toast(error?.response?.data?.message ?? "Terjadi Kesalahan", { type: 'error' });
             }
         };
 

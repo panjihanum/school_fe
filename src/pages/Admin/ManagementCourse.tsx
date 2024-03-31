@@ -6,6 +6,8 @@ import { Course } from 'src/interface/course';
 import AddCourseModal from 'src/components/AddCourseModal';
 import EditCourseModal from 'src/components/EditCourseModal';
 import moment from 'moment';
+import { toast } from 'react-toastify';
+import EnrollmentModal from 'src/components/EnrollmentModal';
 
 const ManagementCourse: React.FC = () => {
     const [courses, setCourses] = useState<Course[]>([]);
@@ -13,6 +15,7 @@ const ManagementCourse: React.FC = () => {
     const { setLoading } = useLoading();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEnrollmentModalOpen, setIsEnrollmentModalOpen] = useState(false);
 
     useEffect(() => {
         fetchCourses();
@@ -24,7 +27,20 @@ const ManagementCourse: React.FC = () => {
             const response = await axiosCourseUtil.get("/admin/courses");
             setCourses(response.data);
         } catch (error) {
-            console.error('Error fetching courses:', error);
+            const axiosError = error as any;
+            if (axiosError.response) {
+                toast(axiosError.response.data.message, {
+                    type: 'error'
+                });
+            } else if (axiosError.request) {
+                toast('Network error. Please try again later.', {
+                    type: 'error'
+                });
+            } else {
+                toast('An error occurred. Please try again later.', {
+                    type: 'error'
+                });
+            }
         }
         setLoading(false);
     };
@@ -32,6 +48,11 @@ const ManagementCourse: React.FC = () => {
     const openEditModal = (course: Course) => {
         setSelectedCourse(course);
         setIsEditModalOpen(true);
+    };
+
+    const openEnrollment = (course: Course) => {
+        setSelectedCourse(course);
+        setIsEnrollmentModalOpen(true);
     };
 
     return (
@@ -63,6 +84,7 @@ const ManagementCourse: React.FC = () => {
                                     <td className="border border-gray-300 px-4 py-2">{course.expiryDate ? moment(course.expiryDate).format("YYYY-MM-DD") : ""}</td>
                                     <td className="border border-gray-300 px-4 py-2 flex items-center justify-center">
                                         <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded mr-2" onClick={() => openEditModal(course)}>Edit</button>
+                                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded mr-2" onClick={() => openEnrollment(course)}>Enroll</button>
                                     </td>
                                 </tr>
                             ))}
@@ -72,6 +94,8 @@ const ManagementCourse: React.FC = () => {
             </div>
             {isEditModalOpen && selectedCourse && <EditCourseModal onRefresh={fetchCourses} course={selectedCourse} onClose={() => setIsEditModalOpen(false)} />}
             {isAddModalOpen && <AddCourseModal onRefresh={fetchCourses} onClose={() => setIsAddModalOpen(false)} />}
+            {isEnrollmentModalOpen && <EnrollmentModal course={selectedCourse} onRefresh={fetchCourses} onClose={() => setIsEnrollmentModalOpen(false)} />}
+
         </AdminLayout>
     );
 };

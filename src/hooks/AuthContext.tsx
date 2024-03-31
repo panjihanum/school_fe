@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode, useEffect } from 'react
 import Cookies from 'js-cookie';
 import { axiosMainUtil } from 'src/util/axiosUtil';
 import { RoleConstant } from 'src/constant/RoleConstant';
+import { toast } from 'react-toastify';
 
 interface UserData {
   id: string;
@@ -69,8 +70,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(userData);
       setToken(response.data.token);
       redirectToRolePage(userData.role);
-    } catch (error) {
-      console.error('Error logging in:', error);
+    } catch (error: any) {
+      toast(error?.response?.data?.message ?? "Terjadi Kesalahan", { type: 'error' });
       throw new Error('Login failed');
     }
   };

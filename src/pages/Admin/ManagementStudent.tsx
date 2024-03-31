@@ -5,6 +5,7 @@ import { axiosMainUtil } from 'src/util/axiosUtil';
 import AddStudentModal from 'src/components/AddStudentModal';
 import EditStudentModal from 'src/components/EditStudentModal';
 import { Student } from 'src/interface/student';
+import { toast } from 'react-toastify';
 
 const ManagementStudent: React.FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
@@ -23,7 +24,20 @@ const ManagementStudent: React.FC = () => {
             const response = await axiosMainUtil.get('/users/list-students');
             setStudents(response.data);
         } catch (error) {
-            console.error('Error fetching students:', error);
+            const axiosError = error as any;
+            if (axiosError.response) {
+                toast(axiosError.response.data.message, {
+                    type: 'error'
+                });
+            } else if (axiosError.request) {
+                toast('Network error. Please try again later.', {
+                    type: 'error'
+                });
+            } else {
+                toast('An error occurred. Please try again later.', {
+                    type: 'error'
+                });
+            }
         }
         setLoading(false);
     };

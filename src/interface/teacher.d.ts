@@ -7,4 +7,5 @@ export interface Teacher {
     role?: string;
     password?: string | null;
     username?: string | null;
+    isActive: boolean;
 }

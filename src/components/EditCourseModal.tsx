@@ -24,7 +24,20 @@ const EditCourseModal: React.FC<EditCourseModalProps> = ({ course, onClose, onRe
                 const response = await axiosMainUtil.get('/users/list-teachers');
                 setTeachers(response.data);
             } catch (error) {
-                console.error('Error fetching teachers:', error);
+                const axiosError = error as any;
+                if (axiosError.response) {
+                    toast(axiosError.response.data.message, {
+                        type: 'error'
+                    });
+                } else if (axiosError.request) {
+                    toast('Network error. Please try again later.', {
+                        type: 'error'
+                    });
+                } else {
+                    toast('An error occurred. Please try again later.', {
+                        type: 'error'
+                    });
+                }
             }
         };
 
