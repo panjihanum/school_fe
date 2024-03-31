@@ -6,12 +6,12 @@ import Modal from './Modal';
 import { useLoading } from 'src/hooks/LoadingContext';
 import { toast } from 'react-toastify';
 
-interface AddStudentModalProps {
+interface AddTeacherModalProps {
     onClose: () => void;
     onRefresh: () => void;
 }
 
-const AddStudentModal: React.FC<AddStudentModalProps> = ({ onClose, onRefresh }) => {
+const AddTeacherModal: React.FC<AddTeacherModalProps> = ({ onClose, onRefresh }) => {
     const initialValues = {
         firstName: '',
         lastName: '',
@@ -37,7 +37,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({ onClose, onRefresh })
     const handleSubmit = async (values: any) => {
         setLoading(true);
         try {
-            await axiosMainUtil.post('/users', values);
+            await axiosMainUtil.post('/users/teacher', values);
             onClose();
             onRefresh();
         } catch (error) {
@@ -62,7 +62,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({ onClose, onRefresh })
     return (
         <Modal isOpen handleClose={onClose}>
             <div className="flex flex-col p-6 space-y-4">
-                <h2 className="text-lg font-semibold">Tambah Siswa</h2>
+                <h2 className="text-lg font-semibold">Tambah Guru</h2>
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                     {({ isSubmitting }) => (
                         <Form className="space-y-2">
@@ -111,4 +111,4 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({ onClose, onRefresh })
     );
 };
 
-export default AddStudentModal;
+export default AddTeacherModal;

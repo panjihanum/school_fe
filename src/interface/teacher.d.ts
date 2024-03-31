@@ -1,4 +1,4 @@
-export interface Student {
+export interface Teacher {
     id: string;
     firstName: string;
     lastName: string;
@@ -7,5 +7,4 @@ export interface Student {
     role?: string;
     password?: string | null;
     username?: string | null;
-    isActive: boolean;
 }

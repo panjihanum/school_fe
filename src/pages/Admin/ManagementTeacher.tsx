@@ -2,34 +2,36 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from 'src/layouts/AdminLayout';
 import { useLoading } from 'src/hooks/LoadingContext';
 import { axiosMainUtil } from 'src/util/axiosUtil';
-import AddStudentModal from 'src/components/AddStudentModal';
-import EditStudentModal from 'src/components/EditStudentModal';
-import { Student } from 'src/interface/student';
+import AddTeacherModal from 'src/components/AddTeacherModal';
+import EditTeacherModal from 'src/components/EditStudentModal';
+import { Teacher } from 'src/interface/teacher';
+// import EditTeacherModal from './EditTeacherModal';
+// import DeleteTeacherModal from './DeleteTeacherModal';
 
-const ManagementStudent: React.FC = () => {
-    const [students, setStudents] = useState<Student[]>([]);
-    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+const ManagementTeacher: React.FC = () => {
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
+    const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
     const { setLoading } = useLoading();
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     useEffect(() => {
-        fetchStudents();
+        fetchTeachers();
     }, []);
 
-    const fetchStudents = async () => {
+    const fetchTeachers = async () => {
         setLoading(true);
         try {
-            const response = await axiosMainUtil.get('/users/list-students');
-            setStudents(response.data);
+            const response = await axiosMainUtil.get('/users/list-teachers');
+            setTeachers(response.data);
         } catch (error) {
-            console.error('Error fetching students:', error);
+            console.error('Error fetching teachers:', error);
         }
         setLoading(false);
     };
 
-    const openEditModal = (student: Student) => {
-        setSelectedStudent(student);
+    const openEditModal = (teacher: Teacher) => {
+        setSelectedTeacher(teacher);
         setIsEditModalOpen(true);
     };
 
@@ -37,9 +39,9 @@ const ManagementStudent: React.FC = () => {
         <AdminLayout>
             <div className="container mx-auto px-4 py-8">
                 <div className="flex justify-between mb-4 items-center mb-8">
-                    <h1 className="text-3xl font-bold">Siswa Management</h1>
+                    <h1 className="text-3xl font-bold">Guru Management</h1>
                     <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded" onClick={() => setIsAddModalOpen(true)}>
-                        Tambah Siswa
+                        Tambah Guru
                     </button>
                 </div>
                 <div className="overflow-x-auto">
@@ -53,13 +55,13 @@ const ManagementStudent: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {students.map((student) => (
-                                <tr key={student.id}>
-                                    <td className="border border-gray-300 px-4 py-2">{(student.firstName?.concat(" ") ?? "").concat(student.lastName ?? "")}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{student.email}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{student.role}</td>
+                            {teachers.map((teacher) => (
+                                <tr key={teacher.id}>
+                                    <td className="border border-gray-300 px-4 py-2">{(teacher.firstName?.concat(" ") ?? "").concat(teacher.lastName ?? "")}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{teacher.email}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{teacher.role}</td>
                                     <td className="border border-gray-300 px-4 py-2 flex items-center justify-center">
-                                        <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded mr-2" onClick={() => openEditModal(student)}>Edit</button>
+                                        <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded mr-2" onClick={() => openEditModal(teacher)}>Edit</button>
                                     </td>
                                 </tr>
                             ))}
@@ -67,10 +69,10 @@ const ManagementStudent: React.FC = () => {
                     </table>
                 </div>
             </div>
-            {isEditModalOpen && selectedStudent && <EditStudentModal onRefresh={fetchStudents} student={selectedStudent} onClose={() => setIsEditModalOpen(false)} />}
-            {isAddModalOpen && <AddStudentModal onRefresh={fetchStudents} onClose={() => setIsAddModalOpen(false)} />}
+            {isEditModalOpen && selectedTeacher && <EditTeacherModal onRefresh={fetchTeachers} student={selectedTeacher} onClose={() => setIsEditModalOpen(false)} />}
+            {isAddModalOpen && <AddTeacherModal onRefresh={fetchTeachers} onClose={() => setIsAddModalOpen(false)} />}
         </AdminLayout>
     );
 };
 
-export default ManagementStudent;
+export default ManagementTeacher;

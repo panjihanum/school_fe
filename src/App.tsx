@@ -8,6 +8,8 @@ import ManagementStudent from './pages/Admin/ManagementStudent'
 import LoadingSpinner from './hooks/LoadingSpinner'
 import 'react-toastify/dist/ReactToastify.css';
 import { LoadingProvider } from './hooks/LoadingContext'
+import ManagementTeacher from './pages/Admin/ManagementTeacher'
+import ManagementCourse from './pages/Admin/ManagementCourse'
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin/manage-students" element={<ManagementStudent />} />
+          <Route path="/admin/manage-teachers" element={<ManagementTeacher />} />
+          <Route path="/admin/manage-courses" element={<ManagementCourse />} />
         </Routes>
       </BrowserRouter>
     </div >

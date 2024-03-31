@@ -22,7 +22,8 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({ student, onClose, o
         birthdate: null,
         email: '',
         password: '',
-        username: ''
+        username: '',
+        isActive: false
     });
     const { setLoading } = useLoading();
 
@@ -35,17 +36,21 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({ student, onClose, o
 
     const validationSchema = Yup.object().shape({
         firstName: Yup.string().required('First name is required'),
-        lastName: Yup.string().required('Last name is required'),
+        lastName: Yup.string().nullable(),
         birthdate: Yup.date().nullable().required('Birthdate is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
         password: Yup.string().required('Password is required'),
-        username: Yup.string().required('Username is required')
+        username: Yup.string().required('Username is required'),
+        isActive: Yup.boolean().required('isActive is required')
     });
 
     const handleSubmit = async (values: Student) => {
         setLoading(true);
         try {
-            await axiosMainUtil.put(`/users/${values.id}`, { ...values, birthdate: moment(values.birthdate).format('YYYY-MM-DD') });
+            await axiosMainUtil.put(`/users/${values.id}`, {
+                ...values,
+                birthdate: moment(values.birthdate).format('YYYY-MM-DD').toString()
+            });
             onClose();
             onRefresh();
         } catch (error) {
@@ -103,6 +108,11 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({ student, onClose, o
                                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                                 <Field type="password" name="password" id="password" className="mt-1 block border border-gray-200 focus:border-gray-400 w-full rounded border-gray-300 focus:outline-none px-3 py-2" />
                                 <ErrorMessage name="password" component="div" className="text-red-500 mt-1" />
+                            </div>
+                            <div>
+                                <label htmlFor="isActive" className="block text-sm font-medium text-gray-700">Is Active</label>
+                                <Field type="checkbox" name="isActive" id="isActive" className="mt-1" />
+                                <ErrorMessage name="isActive" component="div" className="text-red-500 mt-1" />
                             </div>
                             <div className='h-2' />
                             <button type="submit" disabled={isSubmitting} className="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600">Save Changes</button>

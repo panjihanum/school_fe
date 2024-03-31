@@ -18,4 +18,21 @@ axiosMainUtil.interceptors.request.use(
     }
 );
 
-export { axiosMainUtil };
+const axiosCourseUtil: AxiosInstance = axios.create({
+    baseURL: process.env.REACT_APP_COURSE_URL,
+});
+
+axiosCourseUtil.interceptors.request.use(
+    (config) => {
+        const token = Cookies.get('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+export { axiosMainUtil, axiosCourseUtil };
