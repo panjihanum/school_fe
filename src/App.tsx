@@ -15,6 +15,7 @@ import TeacherPage from './pages/Teacher/TeacherPage'
 import StudentListCoursePage from './pages/Student/StudentListCoursePage'
 import BGIcon from './assets/scattered-forcefields.svg';
 import TeacherListCoursePage from './pages/Teacher/TeacherListCoursePage'
+import TeacherForumPage from './pages/Teacher/TeacherForum'
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
 
           <Route path="/teacher" element={<TeacherPage />} />
           <Route path="/teacher/list-courses" element={<TeacherListCoursePage />} />
+          <Route path="/teacher/list-courses/:courseId" element={<TeacherForumPage />} />
         </Routes>
       </BrowserRouter>
     </div >

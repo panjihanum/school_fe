@@ -15,5 +15,5 @@ export interface Course {
     effectiveDate: string | null;
     expiryDate: string | null;
     isActive: boolean;
-    enrollments: Array<CourseEnrollment>
+    enrollments?: Array<CourseEnrollment>
 }

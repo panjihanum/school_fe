@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.14",
     "@types/react-router-dom": "^5.3.3",
+    "@types/socket.io": "^3.0.2",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "formik": "^2.4.5",
@@ -24,6 +28,7 @@
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.5",
+    "socket.io-client": "^4.7.5",
     "sort-by": "^1.2.0",
     "styled-components": "^6.1.8",
     "yup": "^1.4.0"
@@ -33,6 +38,7 @@
     "@types/node": "^20.12.2",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "@types/socket.io-client": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",

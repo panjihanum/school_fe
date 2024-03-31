@@ -3,6 +3,7 @@ import { axiosCourseUtil } from 'src/util/axiosUtil';
 import { useLoading } from 'src/hooks/LoadingContext';
 import { Course } from 'src/interface/course';
 import LayoutTeacher from 'src/layouts/TeacherLayout';
+import { useNavigate } from 'react-router-dom';
 
 const TeacherListCoursePage: React.FC = () => {
     const [courses, setCourses] = useState<Course[]>([]);
@@ -45,8 +46,12 @@ interface ListBoxCardAnimationProps {
 }
 
 const ListBoxCardAnimation: React.FC<ListBoxCardAnimationProps> = ({ course }) => {
+    const navigate = useNavigate();
     return (
-        <button className="bg-[#10141f] bg-opacity-[0.9] backdrop-filter backdrop-blur-lg shadow-lg rounded-lg overflow-hidden transform transition duration-500 hover:scale-105 rounded-lg flex justify-start items-start text-start">
+        <button
+            onClick={() => navigate(`/teacher/list-courses/${course.id}`)}
+
+            className="bg-[#10141f] bg-opacity-[0.9] backdrop-filter backdrop-blur-lg shadow-lg rounded-lg overflow-hidden transform transition duration-500 hover:scale-105 rounded-lg flex justify-start items-start text-start">
             <div className="p-4 w-full">
                 <h3 className="text-xl font-semibold mb-2 text-white">{course.title}</h3>
                 <div className='border-b border-white w-full mt-4' />
