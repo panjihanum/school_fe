@@ -5,7 +5,6 @@ import { getSocketResponse } from 'src/services/socket';
 import ChatBubble from './ChatBubble';
 
 interface Message {
-    id: string;
     senderId: string;
     message: string;
     forumId: string;
@@ -19,7 +18,7 @@ interface ForumPartialProps {
 }
 
 function ForumPartial({ senderId, forumId }: ForumPartialProps): JSX.Element {
-    const { socketResponse, sendData } = useSocket(forumId, senderId);
+    const { isConnected, socketResponse, sendData } = useSocket(forumId, senderId);
     const [messageInput, setMessageInput] = useState<string>("");
     const [messageList, setMessageList] = useState<Message[]>([]);
 
@@ -36,7 +35,6 @@ function ForumPartial({ senderId, forumId }: ForumPartialProps): JSX.Element {
                 message: messageInput
             });
             addMessageToList({
-                id: "",
                 message: messageInput,
                 senderId: senderId,
                 createdAt: new Date(),
@@ -110,7 +108,7 @@ function ForumPartial({ senderId, forumId }: ForumPartialProps): JSX.Element {
                             borderTop: '2px solid #99b1c5',
                         }}
                     >
-                        <Grid item xs={11}>
+                        <Grid item xs={10}>
                             <form onSubmit={sendMessage}>
                                 <TextField
                                     variant="standard"
@@ -127,11 +125,13 @@ function ForumPartial({ senderId, forumId }: ForumPartialProps): JSX.Element {
                                 />
                             </form>
                         </Grid>
-                        <Grid item xs={1}>
+                        <Grid item xs={2}>
                             <Button
                                 onClick={(e) => sendMessage(e as any)}
+                                // disabled={!isConnected}
+                                className="w-full text-nowrap"
                             >
-                                Send
+                                {isConnected ? "Send" : "Loading"}
                             </Button>
                         </Grid>
                     </Grid>

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { io } from "socket.io-client";
+// @ts-ignore
+import io from "socket.io-client";
 
 export const useSocket = (forumId: string, senderId: string) => {
-    const [socket, setSocket] = useState();
+    const [socket, setSocket] = useState<any>();
     const [socketResponse, setSocketResponse] = useState({
         forumId: "",
         message: "",
@@ -10,30 +11,18 @@ export const useSocket = (forumId: string, senderId: string) => {
         messageType: "",
         createdAt: ""
     });
-    const [isConnected, setConnected] = useState(false);
-
-    const sendData = useCallback((payload: any) => {
-        const emit = (socket as any).emit;
-        emit("send_message", {
-            forumId: forumId,
-            message: payload.message,
-            senderId: senderId,
-            messageType: "CLIENT"
-        });
-    }, [socket, forumId]);
 
     useEffect(() => {
         const socketBaseUrl = process.env.REACT_APP_FORUM_SOCKET_URL ?? "";
-        const s: any = io(socketBaseUrl, {
+        const s = io(socketBaseUrl, {
             query: `senderId=${senderId}&forumId=${forumId}` as any
         });
         setSocket(s);
-        s.on("connect", () => {
-            setConnected(true);
-        });
+
         s.on("connect_error", (error: any) => {
             console.error("SOCKET CONNECTION ERROR", error);
         });
+
         s.on("read_message", (res: any) => {
             setSocketResponse({
                 forumId: res.forumId,
@@ -45,9 +34,22 @@ export const useSocket = (forumId: string, senderId: string) => {
         });
 
         return () => {
-            s.disconnect();
+            if (socket) {
+                socket.disconnect();
+            }
         };
     }, [forumId, senderId]);
 
-    return { isConnected, socketResponse, sendData };
+    const sendData = useCallback((payload: any) => {
+        if (socket && socket.connected) {
+            socket.emit("send_message", {
+                forumId: forumId,
+                message: payload.message,
+                senderId: senderId,
+                messageType: "CLIENT"
+            });
+        }
+    }, [socket, forumId, senderId]);
+
+    return { isConnected: socket ? socket.connected : false, socketResponse, sendData };
 }
